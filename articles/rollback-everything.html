@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>The Silent Failure of &#39;Rollback Everything&#39; Culture – RCP</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="../static/bulma.min.css">
+</head>
+<body>
+  <section class="section">
+    <div class="container">
+      <nav class="navbar" role="navigation">
+        <div class="navbar-brand">
+          <a class="navbar-item" href="../index.html">
+            <strong>RCP</strong>&nbsp;<span>Runtime Control Plane</span>
+          </a>
+        </div>
+      </nav>
+
+      <h1 class="title">The Silent Failure of &#39;Rollback Everything&#39; Culture</h1>
+
+      <div class="content is-size-4">
+        
+        <p>
+When something goes wrong in production, the safest action often seems to be a
+full rollback or a complete stop of the rollout. This approach is simple to
+reason about but can cause its own form of damage.
+</p>
+
+        
+        
+        <div class="card">
+          <div class="card-content">
+            <p class="title">
+              Rollback Cannot Fix Runtime State
+            </p>
+          </div>
+        </div>
+        
+
+        
+        
+
+<p>
+A small hotspot in one region, one subset, or one user segment can trigger a
+cluster-wide reversal. Healthy traffic is disturbed, caches and connections are
+flushed, and capacity shifts abruptly. The result can be a larger incident than
+the original localized problem.
+</p>
+
+<p>
+This happens because existing tools lack a way to scope safety actions precisely:
+</p>
+
+<ul>
+  <li>they act globally rather than locally,</li>
+  <li>they lack a clear model of blast radius,</li>
+  <li>they treat every change as all-or-nothing.</li>
+</ul>
+
+<p>
+What is needed is the ability to apply corrections in the right zone and at the
+right scale, without punishing unrelated parts of the system. Runtime safety
+should be scoped, not global.
+</p>
+
+
+
+        
+        
+        <blockquote class="is-size-3">
+          A small hotspot in one region can trigger a cluster-wide reversal. Healthy traffic is disturbed, caches and connections are flushed, and capacity shifts abruptly.
+        </blockquote>
+        
+
+        
+        <p>
+RCP focuses on scoped runtime corrections instead of blunt, system-wide reactions.
+</p>
+
+      </div>
+
+      <p class="mt-5">
+        <strong>Want to see how RCP solves this?</strong><br>
+        Email us at <a href="mailto:bparanj@zepho.com">bparanj@zepho.com</a>.
+      </p>
+
+      <p class="mt-3">
+        <a href="../index.html">&larr; Back to all articles</a>
+      </p>
+    </div>
+  </section>
+</body>
+</html>

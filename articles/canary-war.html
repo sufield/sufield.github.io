@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Winning Canary Battles but Losing the War – RCP</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="../static/bulma.min.css">
+</head>
+<body>
+  <section class="section">
+    <div class="container">
+      <nav class="navbar" role="navigation">
+        <div class="navbar-brand">
+          <a class="navbar-item" href="../index.html">
+            <strong>RCP</strong>&nbsp;<span>Runtime Control Plane</span>
+          </a>
+        </div>
+      </nav>
+
+      <h1 class="title">Winning Canary Battles but Losing the War</h1>
+
+      <div class="content is-size-4">
+        
+        <p>
+Canary releases and progressive delivery have improved how we introduce changes,
+but they mostly focus on short-lived checks around rollout time. They rarely
+address whether the change remains safe over hours and days in a dynamic system.
+</p>
+
+        
+        
+        <div class="card">
+          <div class="card-content">
+            <p class="title">
+              Canary Tests End — Runtime Risk Continues
+            </p>
+          </div>
+        </div>
+        
+
+        
+        
+
+<p>
+A canary might pass a five-minute experiment while traffic is low and dependencies
+are calm, yet trigger cascading failures later when the environment shifts.
+Downstream services might saturate, caches may behave differently, and user
+behavior may concentrate load in unexpected ways.
+</p>
+
+<p>
+The industry response today is reactive:
+</p>
+
+<ul>
+  <li>inspect dashboards and traces during incidents,</li>
+  <li>investigate logs after the fact,</li>
+  <li>run postmortems and refine processes.</li>
+</ul>
+
+<p>
+But the pattern repeats because the underlying assumption has not changed:
+a brief canary test is treated as sufficient proof of long-term safety.
+</p>
+
+
+
+        
+        
+        <blockquote class="is-size-3">
+          A canary might pass a five-minute experiment while traffic is low and dependencies are calm, yet trigger cascading failures later when the environment shifts.
+        </blockquote>
+        
+
+        
+        <p>
+What is missing is a continuous runtime safety contract that stays active after the rollout
+completes. RCP treats each change as a living contract, not a one-time experiment.
+</p>
+
+      </div>
+
+      <p class="mt-5">
+        <strong>Want to see how RCP solves this?</strong><br>
+        Email us at <a href="mailto:bparanj@zepho.com">bparanj@zepho.com</a>.
+      </p>
+
+      <p class="mt-3">
+        <a href="../index.html">&larr; Back to all articles</a>
+      </p>
+    </div>
+  </section>
+</body>
+</html>

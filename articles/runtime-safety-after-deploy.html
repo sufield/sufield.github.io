@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>The Hidden Runtime Risk Nobody Tracks — Safety After Deployment – RCP</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="../static/bulma.min.css">
+</head>
+<body>
+  <section class="section">
+    <div class="container">
+      <nav class="navbar" role="navigation">
+        <div class="navbar-brand">
+          <a class="navbar-item" href="../index.html">
+            <strong>RCP</strong>&nbsp;<span>Runtime Control Plane</span>
+          </a>
+        </div>
+      </nav>
+
+      <h1 class="title">The Hidden Runtime Risk Nobody Tracks — Safety After Deployment</h1>
+
+      <div class="content is-size-4">
+        
+        <p>
+Teams invest heavily in CI/CD, testing, and rollout strategies. Pipelines prove that
+a change can be deployed, not that it will remain safe once it is exposed to real
+traffic and real failure modes.
+</p>
+
+        
+        
+        <div class="card">
+          <div class="card-content">
+            <p class="title">
+              Safety Ends at Deployment — Risk Begins
+            </p>
+          </div>
+        </div>
+        
+
+        
+        
+
+<p>
+The moment code is live, it meets unpredictable load, real user behavior, noisy
+dependencies, and partial failures. The risk profile changes continuously, but most
+systems still behave as if safety was a one-time event finished at deployment time.
+</p>
+
+<p>
+Symptoms show up everywhere:
+</p>
+
+<ul>
+  <li>A canary looks healthy at rollout, then degrades 20 minutes later.</li>
+  <li>Traffic shifts succeed technically but overload downstream services.</li>
+  <li>Latency creeps up slowly until SLOs burn and alerts fire too late.</li>
+</ul>
+
+<p>
+Monitoring and alerts help us see these problems, but they do not own responsibility
+for keeping the change safe. No standard runtime safety layer exists to watch
+deployed changes and react automatically when conditions drift.
+</p>
+
+
+
+        
+        
+        <blockquote class="is-size-3">
+          The moment code is live, it meets unpredictable load, real user behavior, noisy dependencies, and partial failures. The risk profile changes continuously, but most systems still behave as if safety was a one-time event.
+        </blockquote>
+        
+
+        
+        <p>
+RCP was built to close this gap and make safety after deployment a first-class concern.
+</p>
+
+      </div>
+
+      <p class="mt-5">
+        <strong>Want to see how RCP solves this?</strong><br>
+        Email us at <a href="mailto:bparanj@zepho.com">bparanj@zepho.com</a>.
+      </p>
+
+      <p class="mt-3">
+        <a href="../index.html">&larr; Back to all articles</a>
+      </p>
+    </div>
+  </section>
+</body>
+</html>

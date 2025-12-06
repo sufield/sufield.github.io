@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>CrowdStrike July 2024: When One Bad Config File Bricks 8.5 Million Machines – The Cost of Unspoken Contracts Between Sub-Systems – RCP</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="../static/bulma.min.css">
+</head>
+<body>
+  <section class="section">
+    <div class="container">
+      <nav class="navbar" role="navigation">
+        <div class="navbar-brand">
+          <a class="navbar-item" href="../index.html">
+            <strong>RCP</strong>&nbsp;<span>Runtime Control Plane</span>
+          </a>
+        </div>
+      </nav>
+
+      <h1 class="title">CrowdStrike July 2024: When One Bad Config File Bricks 8.5 Million Machines – The Cost of Unspoken Contracts Between Sub-Systems</h1>
+
+      <div class="content is-size-4">
+        
+        <p>On July 19, 2024, a single CrowdStrike Falcon sensor config file caused 8.5 million Windows machines to crash simultaneously. Airports shut down. Hospitals canceled surgeries. Banks went offline.</p>
+
+        
+        
+        <div class="card">
+          <div class="card-content">
+            <p class="title">
+              Implicit Contracts Between Systems Fail
+            </p>
+          </div>
+        </div>
+        
+
+        
+        
+<p>The config file was <strong>malformed</strong>. But the driver <strong>assumed it would always be valid</strong>.</p>
+<h2>The Unspoken Contract</h2>
+<p>The Falcon sensor driver had an implicit contract with the config delivery system:</p>
+<p><strong>Driver assumption</strong>: &quot;Config files are always well-formed.&quot;</p>
+<p><strong>Config system assumption</strong>: &quot;The driver will validate configs before applying them.&quot;</p>
+<p>Neither side verified the other's assumption. When a malformed config was deployed, both sides failed.</p>
+<h2>Why Validation Was Missing</h2>
+<p>The driver team assumed validation happened upstream. The config team assumed validation happened downstream. Neither team <strong>proved</strong> their assumption.</p>
+<p>This is the textbook definition of an <strong>implicit invariant</strong>.</p>
+<h2>The Cascade</h2>
+<p>When the driver loaded the malformed config:</p>
+<ol>
+<li>A null pointer dereference in kernel mode</li>
+<li>Windows BSOD (kernel panic)</li>
+<li>Machine reboots</li>
+<li>CrowdStrike auto-starts on boot</li>
+<li>Loads same malformed config</li>
+<li>BSOD again</li>
+<li>Boot loop</li>
+</ol>
+<p>8.5 million machines in a death spiral. No remote recovery possible. Every machine required manual intervention.</p>
+<h2>What Would Have Prevented This?</h2>
+<p>If the contract between driver and config system had been <strong>explicit and validated</strong>, the malformed config would never have reached production:</p>
+<ol>
+<li><strong>Explicit schema</strong>: Config format defined in a machine-readable spec</li>
+<li><strong>Continuous validation</strong>: Every config validated against schema before deployment</li>
+<li><strong>Contract testing</strong>: Driver and config system continuously prove they agree on invariants</li>
+</ol>
+<p>Instead, the contract was implicit, unvalidated, and assumed to always hold.</p>
+<h2>The Industry Pattern</h2>
+<p>This is not unique to CrowdStrike. Every cloud provider has dozens of these implicit contracts:</p>
+<ul>
+<li>Between control plane and data plane</li>
+<li>Between orchestrator and runtime</li>
+<li>Between CDN and origin</li>
+<li>Between load balancer and backend</li>
+</ul>
+<p>When these contracts break — and they always do — we get global cascading outages.</p>
+<h2>The Way Forward</h2>
+<p>Aviation eliminated this class of failure by making implicit contracts impossible. Every interface has a formal specification. Every component continuously proves it conforms to the spec.</p>
+<p>We have the same technology available. We choose not to use it.</p>
+<p>The cost: 8.5 million machines bricked. Billions in economic damage. Lives disrupted.</p>
+
+
+        
+        
+        <blockquote class="is-size-3">
+          The driver team assumed validation happened upstream. The config team assumed validation happened downstream. Neither team proved their assumption. 8.5 million machines bricked.
+        </blockquote>
+        
+
+        
+        <p>How many more outages will it take before we adopt the discipline that already exists?</p>
+
+      </div>
+
+      <p class="mt-5">
+        <strong>Want to see how RCP solves this?</strong><br>
+        Email us at <a href="mailto:bparanj@zepho.com">bparanj@zepho.com</a>.
+      </p>
+
+      <p class="mt-3">
+        <a href="../index.html">&larr; Back to all articles</a>
+      </p>
+    </div>
+  </section>
+</body>
+</html>

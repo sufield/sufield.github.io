@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Why AWS Still Has Multi-Day Global Outages in 2025: The Eternal Gap Between Static Files and Live Cloud Reality – RCP</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="../static/bulma.min.css">
+</head>
+<body>
+  <section class="section">
+    <div class="container">
+      <nav class="navbar" role="navigation">
+        <div class="navbar-brand">
+          <a class="navbar-item" href="../index.html">
+            <strong>RCP</strong>&nbsp;<span>Runtime Control Plane</span>
+          </a>
+        </div>
+      </nav>
+
+      <h1 class="title">Why AWS Still Has Multi-Day Global Outages in 2025: The Eternal Gap Between Static Files and Live Cloud Reality</h1>
+
+      <div class="content is-size-4">
+        
+        <p>On February 28, 2017, Amazon S3 in the US-EAST-1 region suffered a region-wide service disruption. The root cause was an operational mistake in the internal maintenance workflow that unexpectedly removed servers from critical S3 subsystems.</p>
+
+        
+        
+        <div class="card">
+          <div class="card-content">
+            <p class="title">
+              Static Configs Cannot Track Live Reality
+            </p>
+          </div>
+        </div>
+        
+
+        
+        
+<h2>What Went Wrong</h2>
+<p>An engineer ran a playbook intended to remove a small subset of billing-system servers. Because of a mis-entered parameter, a much larger set of servers — including those managing S3’s index and placement subsystems — was decommissioned.</p>
+
+<p>Result: the metadata subsystem that resolves object paths became unavailable. S3 could no longer serve GET, LIST, PUT, or DELETE requests, globally impacting static-file and other object-storage usage in that region.</p>
+
+<h2>Why Implicit Assumptions Failed</h2>
+<p>The outage reveals a deeply embedded invariant that had never been formalized: <strong>“Metadata-index subsystem must always remain available for object storage operations.”</strong></p>
+
+<p>This dependency was never declared or validated by customers.  
+Static-file hosting, website asset delivery, backups, object stores — all silently assumed S3’s metadata subsystem would never fail.</p>
+
+<h2>The Cascade</h2>
+<p>When the indexing subsystem went down:</p>
+<ol>
+  <li>All object-storage requests began failing (GET, PUT, LIST).</li>
+  <li>Static-file hosting broke across thousands of websites and apps depending on S3.</li>
+  <li>Status dashboards — ironically hosted on S3 — remained stale or unreachable for hours.</li>
+  <li>Downstream systems that relied on S3 availability faced timeouts, failed requests, degraded behavior, or total outage.</li>
+</ol>
+
+<h2>What Could Have Prevented It (RCP-Style)</h2>
+<p>If there had been a safety invariant like: <strong>“S3 metadata subsystem must be healthy before any production-critical operation proceeds”</strong>, then:</p>
+<ul>
+  <li>An external monitor (or controller) would detect the subsystem removal caused by the maintenance error.</li>
+  <li>The invariant violation would block further deployments, working requests, or configuration changes targeting S3-backed storage.</li>
+  <li>Clients could fall back to redundant storage or cached assets — avoiding a global outage.</li>
+</ul>
+
+<h2>The Broader Pattern</h2>
+<p>This outage illustrates a general class of failures: “implicit infrastructure invariants assumed but never codified.” 
+In object-storage, CDN, cloud-storage, and distributed filesystem usage, many services silently rely on availability and consistency guarantees that are not formalized in contracts or infrastructure code.</p>
+
+<h2>The Path Forward</h2>
+<p>To avoid repeating this class of failure, systems need:  
+<ol>
+  <li><strong>Explicit modeling</strong> of all critical infrastructure invariants (storage metadata, indexing, placement, availability, latency).  
+  <li><strong>Automated validation</strong> and health checks outside vendor tooling.  
+  <li><strong>Guardrails</strong> preventing any production action if invariants are violated — especially for storage, network, and configuration subsystems.</li>
+</ol>
+</p>
+
+
+
+        
+        
+        <blockquote class="is-size-3">
+          When you write a Terraform file, you&#39;re creating a fossil — a snapshot of what you wanted the world to look like at that moment. But the cloud is alive.
+        </blockquote>
+        
+
+        
+        <p>The technology and design discipline already exist. What’s missing is adopting them for cloud-native infrastructures.</p>
+
+      </div>
+
+      <p class="mt-5">
+        <strong>Want to see how RCP solves this?</strong><br>
+        Email us at <a href="mailto:bparanj@zepho.com">bparanj@zepho.com</a>.
+      </p>
+
+      <p class="mt-3">
+        <a href="../index.html">&larr; Back to all articles</a>
+      </p>
+    </div>
+  </section>
+</body>
+</html>
