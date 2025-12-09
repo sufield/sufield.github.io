@@ -21,7 +21,29 @@
 
       <div class="content is-size-4">
         
-        <p>The Mars Perseverance rover goes into hibernation for 8 months during the Martian winter. When it wakes up, it's completely autonomous. No engineer can SSH in. No hotfix can be deployed. No reboot button exists.</p>
+        The statement is partially incorrect, but directionally captures the disparity in computing power—though with some factual errors in the details. Let me break it down based on verified specs and comparisons.
+
+### NASA vs. Cloud Providers (AWS, GCP, Azure)
+NASA does indeed operate with a **fraction** of the computing resources available to major cloud providers like AWS, GCP, or Azure, making this part of the statement broadly accurate. Here's why:
+- **NASA's Total Compute Power**: NASA's High-End Computing Capability (HECC) division manages several supercomputers, but their combined peak performance is in the low tens of petaflops (1 petaflop = 10^15 floating-point operations per second, or FLOPS). Key systems include:
+  - Pleiades: ~7.1 petaflops (as of recent upgrades; ranked ~32nd globally in 2019 but has since fallen in rankings).
+  - Aitken: ~5.8 petaflops.
+  - Endeavour: ~0.077 petaflops.
+  - Total across all HECC systems: Roughly 10-20 petaflops, focused on specialized tasks like simulations for aerospace, climate modeling, and space missions. NASA also uses cloud bursting (e.g., to AWS for overflow), but its in-house resources are limited by budget and mission-specific needs.
+- **Cloud Providers' Scale**: These giants operate at exaflop levels (1 exaflop = 10^18 FLOPS, or 1,000 petaflops), dwarfing NASA's capabilities:
+  - AWS: Can deliver up to 20 exaflops in EC2 UltraClusters (e.g., via P5 instances for AI workloads), with planetary-scale data centers handling millions of servers and petabytes of storage.
+  - GCP and Azure: Similar scales, with GCP's AI infrastructure reaching multi-exaflop performance for training models, and Azure leveraging vast HPC clusters (e.g., via partnerships with supercomputers like Frontier at 1.7 exaflops, but their total cloud capacity far exceeds NASA's).
+- **Why a Fraction?**: NASA's budget (~$25B annually) prioritizes missions over raw compute scale, while cloud providers invest trillions in infrastructure (e.g., AWS alone has ~1 million servers). NASA's compute is mission-optimized (e.g., radiation-hardened for space), not general-purpose like clouds. If we compare total FLOPS, NASA's is ~0.001% of a single cloud giant's capacity—truly a fraction.
+
+### Perseverance's Computer vs. a 2004 iPhone
+This part is **wrong** due to a factual inaccuracy: There was no iPhone in 2004. The first iPhone launched on June 29, 2007. However, the spirit (Perseverance uses outdated tech) is correct—its processor is slower than the 2007 iPhone's in raw clock speed and overall performance.
+- **Perseverance's Specs**: The rover's main computer uses a radiation-hardened PowerPC 750 (RAD750) processor, a 1990s-era chip (debuted in 1997) clocked at ~200-233 MHz with a single core and ~6 million transistors. It's based on the same architecture as the 1998 iMac G3, optimized for space durability (e.g., withstands radiation up to 1 million rads) but not speed.
+- **2007 iPhone Specs**: Samsung ARM11 processor at 412 MHz (underclocked from 620 MHz for battery life), with better multitasking and graphics for its era.
+- **Comparison**: Perseverance's ~233 MHz is slower than the iPhone's 412 MHz clock speed. In benchmarks, the rover's performance is comparable to late-1990s PCs, while the 2007 iPhone handled modern (for then) tasks like web browsing. The rover's design prioritizes reliability over speed—it's ~10x faster than Curiosity's (also RAD750 but older variant), but still lags consumer tech due to space constraints (e.g., power limits from RTG, radiation hardening). The "2004 iPhone" might be a misremembered reference to pre-iPhone Apple devices like iPods, but it's inaccurate.
+
+In summary, NASA *does* have far less compute than cloud titans (correct), but the Perseverance-iPhone analogy is off by 3 years and specifics (wrong). If the intent was to highlight NASA's resource constraints in space tech, it's fair—but factually imprecise. For context, NASA's Earth-based simulations use supercomputers, but rovers like Perseverance are built for extreme environments, not raw power.
+
+<p>The Mars Perseverance rover goes into hibernation for 8 months during the Martian winter. When it wakes up, it's completely autonomous. No engineer can SSH in. No hotfix can be deployed. No reboot button exists.</p>
 
         
         
@@ -104,11 +126,6 @@
         <p>Because if a rover on Mars can prove it will survive 8 months of hibernation, surely we can prove a config change won't take down the internet.</p>
 
       </div>
-
-      <p class="mt-5">
-        <strong>Want to see how RCP solves this?</strong><br>
-        Email us at <a href="mailto:bparanj@zepho.com">bparanj@zepho.com</a>.
-      </p>
 
       <p class="mt-3">
         <a href="../index.html">&larr; Back to all articles</a>

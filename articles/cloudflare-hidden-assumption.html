@@ -21,8 +21,7 @@
 
       <div class="content is-size-4">
         
-        <p>On November 18, 2025, Cloudflare's global edge network went offline for 2 hours.  
-The root cause? A single implicit invariant buried inside the Bot-Management configuration pipeline:</p>
+        <p>On November 18, 2025, Cloudflare's network began experiencing significant failures to deliver core network traffic after a change to a database system used by its Bot Management feature pipeline.</p>
 
         
         
@@ -38,74 +37,27 @@ The root cause? A single implicit invariant buried inside the Bot-Management con
         
         
 
-<p><strong>Assumption</strong>: The generated feature-file will always remain under the proxy’s maximum allowed size.</p>
+<p>The incident was triggered when a change to database permissions caused the query that generates a Bot Management "feature file" to return duplicate feature rows, which increased the size of that file. The proxy software that processes this file enforced a limit on the number of features it could load; when the larger-than-expected file was propagated across the network, that limit was exceeded and the software failed, returning HTTP 5xx errors.</p>
 
-<p>A routine update produced a malformed file that exceeded that limit.  
-The proxies couldn’t start.  
-The internet went dark.</p>
-
-<h2>Why This Assumption Was Never Validated</h2>
-<p>The file-size constraint was hard-coded deep inside the proxy implementation.  
-The config-generation system had <em>no awareness</em> of that boundary.</p>
-
-<p>In staging it worked.  
-In testing it worked.  
-In millions of real deployments it worked.</p>
-
-<p>But it was never <strong>formally validated</strong> as an invariant of the entire edge system.  
-It was just… there.</p>
+<h2>How the Failure Developed</h2>
+<p>Cloudflare later explained that a permissions change in a ClickHouse cluster caused a query used by the feature-file generator to start returning additional metadata. This more than doubled the number of features described in the generated file. When files with more than the allowed number of features were distributed, the Bot Management module hit its configured limit and panicked, which in turn caused errors in the core proxy handling customer traffic.</p>
 
 <h2>The Cascade</h2>
-<p>Here’s what happened when the malformed feature-file was pushed globally:</p>
+<p>Based on Cloudflare's public post-incident report, the sequence of events was:</p>
 <ol>
-  <li>Database permission change caused duplicate feature entries</li>
-  <li>Duplicate entries doubled the generated file’s size</li>
-  <li>File exceeded the proxy’s maximum: an implicit, undocumented limit</li>
-  <li>Proxies attempted to load the file on restart</li>
-  <li>Proxies crashed on initialization</li>
-  <li>Rolling update propagated the bad file to other nodes</li>
-  <li>Each new node restarted… and crashed</li>
-  <li>Cloudflare’s global network became unable to serve traffic</li>
+  <li>A change to database permissions altered the behavior of a ClickHouse query used to generate the Bot Management feature file.</li>
+  <li>The query began returning duplicate feature metadata, increasing the number of features in the generated file.</li>
+  <li>The resulting feature file exceeded the Bot Management module's configured limit on the number of features it could load.</li>
+  <li>The larger-than-expected feature file was propagated across the network to machines running the proxy software.</li>
+  <li>When the proxy loaded the file, the Bot Management module hit the feature limit and triggered a panic, producing HTTP 5xx errors.</li>
+  <li>While the change was partially rolled out, the system alternated between good and bad files until all nodes generated the bad configuration and the failures stabilized.</li>
+  <li>Cloudflare mitigated the incident by stopping generation of the bad feature file, inserting a known-good file into the distribution queue, and restarting affected services.</li>
 </ol>
 
-<h2>The Hidden Dependency</h2>
-<p>The config generator depended on a database assumption:</p>
+<h2>What Might Help Prevent Similar Incidents</h2>
+<p>Cloudflare's write-up notes that assumptions about database query behavior and feature limits contributed to the outage. Making such limits explicit at the interface between configuration-generation systems and runtime modules, and validating generated artifacts against those limits before network-wide rollout, can reduce the risk that a change in one component will cause unexpected failures in another.</p>
 
-<p><strong>“There will be no duplicate entries.”</strong></p>
-
-<p>The proxy depended on a different assumption:</p>
-
-<p><strong>“Files over X MB are invalid and must never appear.”</strong></p>
-
-<p>Neither system validated the other’s constraint.  
-Both systems silently assumed correctness.  
-When the database produced malformed data, the proxy’s assumption broke—and the entire edge collapsed.</p>
-
-<h2>What Would Have Prevented This?</h2>
-<p>If the pipeline had <strong>explicitly modeled</strong> the proxy’s file-size invariant and <strong>continuously validated</strong> the shape of the generated file, it would have blocked the rollout <strong>before</strong> the malformed artifact reached even a single node.</p>
-
-<p>Instead, the pipeline assumed the invariant held.  
-It didn’t.  
-We got a global outage.</p>
-
-<h2>The Pattern Repeats</h2>
-<p>This is the same failure pattern seen in:</p>
-<ul>
-  <li>CrowdStrike July 2024 (assumed local config files were always valid)</li>
-  <li>AWS US-EAST-1 November 2024 (assumed internal resource-layout invariants never changed)</li>
-  <li>Google Cloud October 2023 (assumed failover would complete within a fixed time window)</li>
-</ul>
-
-<p>Every one of these outages was caused by an <strong>implicit invariant</strong> that was <strong>assumed but never validated</strong>.</p>
-
-<h2>The Way Forward</h2>
-<p>Aviation, space, and nuclear engineering eliminated this class of failure decades ago by adopting strict invariant discipline:</p>
-<ol>
-  <li><strong>Every assumption becomes explicit</strong></li>
-  <li><strong>Every assumption is continuously validated</strong></li>
-  <li><strong>No rollout proceeds if any invariant is violated</strong></li>
-</ol>
-
+<h2>Broader Context</h2>
 
 
         
@@ -116,15 +68,9 @@ We got a global outage.</p>
         
 
         
-        <p>The technology exists.  
-The discipline exists.  
-The only question is whether we're ready to adopt it.</p>
-      </div>
+        <p>Safety-critical fields such as aviation, space, and nuclear operations commonly treat assumptions and limits as explicit contracts and use procedures and automated checks to verify them during design, testing, and operation. Applying similar discipline to large-scale cloud infrastructure is one way to reduce the impact of configuration and integration errors.</p>
 
-      <p class="mt-5">
-        <strong>Want to see how RCP solves this?</strong><br>
-        Email us at <a href="mailto:bparanj@zepho.com">bparanj@zepho.com</a>.
-      </p>
+      </div>
 
       <p class="mt-3">
         <a href="../index.html">&larr; Back to all articles</a>
